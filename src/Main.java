@@ -31,7 +31,5 @@ public class Main {
         }catch (IOException e){
             e.getLocalizedMessage();
         }
-        //Read the compressed file
-
     }
 }
