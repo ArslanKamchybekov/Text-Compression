@@ -3,32 +3,82 @@ import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
-        //Read the input file
-        HashMap<String, Integer> frequencyMap = new HashMap<>();
+        String inputFilePath = "/Users/arslankamchybekov/Desktop/Intellij Projects/Text Compression/input.txt";
+        String outputFilePath = "/Users/arslankamchybekov/Desktop/Intellij Projects/Text Compression/output.sc";
+        String decompressedFilePath = "/Users/arslankamchybekov/Desktop/Intellij Projects/Text Compression/readable.txt";
+
         try {
-            BufferedReader bufferedReader = new BufferedReader(
-                    new FileReader("/Users/arslankamchybekov/Desktop/Intellij Projects/Text Compression/input.txt"));
-            String str;
-            while((str = bufferedReader.readLine()) != null){
-                String[] words = str.split("\\s+");
-                for(String word: words) {
-                    word = word.toLowerCase();
-                    frequencyMap.put(word, frequencyMap.getOrDefault(word, 0) + 1);
+            // Read input file
+            BufferedReader reader = new BufferedReader(new FileReader(inputFilePath));
+            StringBuilder inputText = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                inputText.append(line).append("\n");
+            }
+            reader.close();
+
+            // Identify words and assign codes
+            HashMap<String, Integer> wordCodeMap = new HashMap<>();
+            int code = 0;
+            String[] words = inputText.toString().split("\\s+");
+            for (String word : words) {
+                if (!wordCodeMap.containsKey(word)) {
+                    wordCodeMap.put(word, code++);
                 }
             }
-            bufferedReader.close();
-        } catch (IOException e) {
-            e.getLocalizedMessage();
-        }
-        //Write the compressed file
-        try{
-            BufferedWriter bufferedWriter = new BufferedWriter(
-                    new FileWriter("/Users/arslankamchybekov/Desktop/Intellij Projects/Text Compression/output.sc"));
-            for(String word: frequencyMap.keySet()){
-                int frequency = frequencyMap.get(word);
-                bufferedWriter.write(word + " : " + frequency + "\n");
+
+            // Compress into output file
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath));
+            for (String word : words) {
+                int wordCode = wordCodeMap.get(word);
+                writer.write(wordCode + " ");
             }
-        }catch (IOException e){
+            writer.close();
+
+            // Read compressed file and decompress
+            BufferedReader compressedReader = new BufferedReader(new FileReader(outputFilePath));
+            StringBuilder decompressedText = new StringBuilder();
+            String compressedLine;
+            while ((compressedLine = compressedReader.readLine()) != null) {
+                String[] compressedWords = compressedLine.split("\\s+");
+                for (String compressedWord : compressedWords) {
+                    int wordCode = Integer.parseInt(compressedWord);
+                    for (String key : wordCodeMap.keySet()) {
+                        if (wordCodeMap.get(key) == wordCode) {
+                            decompressedText.append(key).append(" ");
+                            break;
+                        }
+                    }
+                }
+            }
+            compressedReader.close();
+
+            // Write decompressed file
+            BufferedWriter decompressedWriter = new BufferedWriter(new FileWriter(decompressedFilePath));
+            decompressedWriter.write(decompressedText.toString());
+            decompressedWriter.close();
+
+            // Compare files
+            FileInputStream inputFileStream = new FileInputStream(inputFilePath);
+            FileInputStream readableFileStream = new FileInputStream(decompressedFilePath);
+            boolean filesMatch = true;
+            int inputByte, readableByte;
+            while ((inputByte = inputFileStream.read()) != -1 && (readableByte = readableFileStream.read()) != -1) {
+                if (inputByte != readableByte) {
+                    filesMatch = false;
+                    break;
+                }
+            }
+            inputFileStream.close();
+            readableFileStream.close();
+
+            if (filesMatch) {
+                System.out.println("Files match.");
+            } else {
+                System.out.println("Files do not match.");
+            }
+            System.out.println("Compression and decompression completed successfully.");
+        } catch (IOException e) {
             e.getLocalizedMessage();
         }
     }
