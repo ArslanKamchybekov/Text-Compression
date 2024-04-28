@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
+        // Files paths
         String inputFilePath = "/Users/arslankamchybekov/Desktop/Intellij Projects/Text Compression/input.txt";
         String outputFilePath = "/Users/arslankamchybekov/Desktop/Intellij Projects/Text Compression/output.sc";
         String decompressedFilePath = "/Users/arslankamchybekov/Desktop/Intellij Projects/Text Compression/readable.txt";
@@ -19,11 +20,11 @@ public class Main {
 
             // Identify words and assign codes
             HashMap<String, Integer> wordCodeMap = new HashMap<>();
-            int code = 0;
+            int code = 0; // Code increment
             String[] words = inputText.toString().split("\\s+");
             for (String word : words) {
                 if (!wordCodeMap.containsKey(word)) {
-                    wordCodeMap.put(word, code++);
+                    wordCodeMap.put(word, code++); //Increment code as new word occurs
                 }
             }
 
@@ -73,9 +74,9 @@ public class Main {
             readableFileStream.close();
 
             if (filesMatch) {
-                System.out.println("Files match.");
+                System.out.println("Files' memories match.");
             } else {
-                System.out.println("Files do not match.");
+                System.out.println("Files' memories do not match.");
             }
             System.out.println("Compression and decompression completed successfully.");
         } catch (IOException e) {
