@@ -20,11 +20,11 @@ public class Main {
 
             // Identify words and assign codes
             HashMap<String, Integer> wordCodeMap = new HashMap<>();
-            int code = 0; // Code increment
+            int code = 0;
             String[] words = inputText.toString().split("\\s+");
             for (String word : words) {
                 if (!wordCodeMap.containsKey(word)) {
-                    wordCodeMap.put(word, code++); //Increment code as new word occurs
+                    wordCodeMap.put(word, code++); //Increment code as new word appears
                 }
             }
 
