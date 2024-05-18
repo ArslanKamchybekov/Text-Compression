@@ -17,6 +17,6 @@ public class Main {
         Decompressor decompressor = new Decompressor(outputFilePath, decompressedFilePath);
         decompressor.decompress(wordCodeMap);
 
-        System.out.println("Compression and decompression completed successfully.");
+        System.out.println("Compression and decompression completed successfully!");
     }
 }
