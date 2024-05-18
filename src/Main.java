@@ -1,5 +1,3 @@
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class Main {
@@ -17,6 +15,6 @@ public class Main {
         Decompressor decompressor = new Decompressor(outputFilePath, decompressedFilePath);
         decompressor.decompress(wordCodeMap);
 
-        System.out.println("Compression and decompression completed successfully!");
+        System.out.println("Compression and decompression completed successfully.");
     }
 }
